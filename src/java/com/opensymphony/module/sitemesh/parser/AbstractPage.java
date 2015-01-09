@@ -30,6 +30,9 @@ import java.util.Set;
  * @see com.opensymphony.module.sitemesh.Page
  */
 public abstract class AbstractPage implements Page {
+    
+    public abstract void writeMainContent(Writer out) throws IOException;
+    
     /**
      * Map of all properties.
      * Key is String. Value is java.util.List of multiple String values.
@@ -67,6 +70,7 @@ public abstract class AbstractPage implements Page {
      * body tags, but all the data in between.
      */
     public abstract void writeBody(Writer out) throws IOException;
+    
 
     public String getBody() {
         try {

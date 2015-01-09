@@ -8,6 +8,8 @@ import java.io.Writer;
  * @since SiteMesh 3
  */
 public interface Content {
+    
+    void writeMainContent(Writer out) throws IOException;
 
     /**
      * Write out the original unprocessed content.

@@ -32,6 +32,9 @@ import java.util.Map;
  * @version $Revision: 1.5 $
  */
 public interface Page {
+    
+    void writeMainContent(Writer out) throws IOException;
+    
     /**
      * Write the entire contents of the <code>Page</code>, in the format before
      * it was parsed, to the <code>Writer</code>.

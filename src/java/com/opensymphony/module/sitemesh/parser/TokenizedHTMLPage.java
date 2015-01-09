@@ -20,6 +20,21 @@ import java.io.Writer;
  */
 public class TokenizedHTMLPage extends AbstractHTMLPage implements PageBuilder {
 
+    private SitemeshBufferFragment mainContent;
+    
+    @Override
+    public void writeMainContent(Writer out) throws IOException {
+        if (out instanceof SitemeshWriter) {
+            ((SitemeshWriter) out).writeSitemeshBufferFragment(mainContent);
+        } else {
+            mainContent.writeTo(out);
+        }
+    }
+    
+    public void setMainContent(SitemeshBufferFragment mainContent){
+        this.mainContent = mainContent;
+    }
+    
     private SitemeshBufferFragment body;
     private SitemeshBufferFragment head;
 

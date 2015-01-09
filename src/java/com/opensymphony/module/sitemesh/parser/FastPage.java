@@ -24,9 +24,14 @@ import java.util.Map;
  */
 public final class FastPage extends AbstractHTMLPage
 {
+   public void writeMainContent(Writer out) throws IOException
+   {
+   
+   }
+    
    private String head;
    private String body;
-
+   
    public FastPage(SitemeshBuffer sitemeshBuffer, Map sitemeshProps, Map htmlProps, Map metaProps, Map bodyProps,
                    String title, String head, String body, boolean frameSet)
    {

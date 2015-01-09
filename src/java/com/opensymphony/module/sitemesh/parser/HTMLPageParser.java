@@ -42,6 +42,8 @@ public class HTMLPageParser implements PageParser {
     public Page parse(SitemeshBuffer buffer) throws IOException {
         SitemeshBufferFragment.Builder head = SitemeshBufferFragment.builder().setBuffer(buffer).setLength(0);
         SitemeshBufferFragment.Builder body = SitemeshBufferFragment.builder().setBuffer(buffer);
+        SitemeshBufferFragment.Builder mainContent = SitemeshBufferFragment.builder().setBuffer(buffer);
+        
         TokenizedHTMLPage page = new TokenizedHTMLPage(buffer);
         HTMLProcessor processor = new HTMLProcessor(buffer, body);
         State html = processor.defaultState();
@@ -50,12 +52,19 @@ public class HTMLPageParser implements PageParser {
         html.addRule(new HeadExtractingRule(head)); // contents of <head>
         html.addRule(new BodyTagRule(page, body)); // contents of <body>
         html.addRule(new TitleExtractingRule(page)); // the <title>
-        html.addRule(new FramesetRule(page)); // if the page is a frameset
+        //html.addRule(new FramesetRule(page)); // if the page is a frameset
 
+        html.addRule(new HtmlAttributesRule(page));         // attributes in <html> element
+        html.addRule(new MetaTagRule(page));                // all <meta> tags
+        html.addRule(new ParameterExtractingRule(page));    // <parameter> blocks
+        
         // Additional rules - designed to be tweaked.
         addUserDefinedRules(html, page);
 
+        html.addRule(new ContentBlockExtractingRule(page, mainContent)); // <content> blocks
+        
         processor.process();
+        page.setMainContent(mainContent.build());
         page.setBody(body.build());
         page.setHead(head.build());
         return page;
@@ -64,18 +73,18 @@ public class HTMLPageParser implements PageParser {
     protected void addUserDefinedRules(State html, PageBuilder page) {
         // Ensure that while in <xml> tag, none of the other rules kick in.
         // For example <xml><book><title>hello</title></book></xml> should not change the affect the title of the page.
-        State xml = new State();
-        html.addRule(new StateTransitionRule("xml", xml));
+        //State xml = new State();
+        //html.addRule(new StateTransitionRule("xml", xml));
 
         // Useful properties
         html.addRule(new HtmlAttributesRule(page));         // attributes in <html> element
         html.addRule(new MetaTagRule(page));                // all <meta> tags
         html.addRule(new ParameterExtractingRule(page));    // <parameter> blocks
-        html.addRule(new ContentBlockExtractingRule(page)); // <content> blocks
+        
 
         // Capture properties written to documents by MS Office (author, version, company, etc).
         // Note: These properties are from the xml state, not the html state.
-        xml.addRule(new MSOfficeDocumentPropertiesRule(page));
+       // xml.addRule(new MSOfficeDocumentPropertiesRule(page));
     }
 
 }

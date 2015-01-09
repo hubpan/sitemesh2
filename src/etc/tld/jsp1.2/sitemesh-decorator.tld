@@ -25,6 +25,12 @@
     </tag>
 
     <tag>
+        <name>mainContent</name>
+        <tagclass>com.opensymphony.module.sitemesh.taglib.decorator.MainContentTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+    </tag>
+
+    <tag>
         <name>title</name>
         <tag-class>com.opensymphony.module.sitemesh.taglib.decorator.TitleTag</tag-class>
         <body-content>JSP</body-content>

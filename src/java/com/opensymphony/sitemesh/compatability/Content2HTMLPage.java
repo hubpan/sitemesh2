@@ -17,6 +17,10 @@ import java.util.HashMap;
  * @since SiteMesh 3
  */
 public class Content2HTMLPage implements HTMLPage {
+    
+    public void writeMainContent(Writer out) throws IOException {
+        content.writeMainContent(out);
+    }
 
     private final Content content;
     private HttpServletRequest request;
